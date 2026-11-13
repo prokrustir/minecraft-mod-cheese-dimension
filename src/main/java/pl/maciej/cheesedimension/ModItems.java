@@ -2,6 +2,8 @@ package pl.maciej.cheesedimension;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.component.type.FoodComponent;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -20,6 +22,14 @@ public class ModItems {
 			new Item(new Item.Settings().food(new FoodComponent.Builder()
 					.nutrition(4)
 					.saturationModifier(0.6f)
+					.build())));
+
+	public static final Item MOLDY_CHEESE = register("moldy_cheese",
+			new Item(new Item.Settings().food(new FoodComponent.Builder()
+					.nutrition(3)
+					.saturationModifier(0.3f)
+					.alwaysEdible()
+					.statusEffect(new StatusEffectInstance(StatusEffects.POISON, 20 * 10), 1.0f)
 					.build())));
 
 	public static final Item CHEESE_KNIFE = register("cheese_knife",
@@ -45,7 +55,9 @@ public class ModItems {
 				.displayName(Text.translatable("itemGroup.cheesedimension.main"))
 				.entries((context, entries) -> {
 					entries.add(ModBlocks.CHEESE_BLOCK);
+					entries.add(ModBlocks.MOLDY_CHEESE_BLOCK);
 					entries.add(CHEESE);
+					entries.add(MOLDY_CHEESE);
 					entries.add(CHEESE_KNIFE);
 					entries.add(CHEESE_SAUCE_BUCKET);
 					entries.add(MOUSE_SPAWN_EGG);
