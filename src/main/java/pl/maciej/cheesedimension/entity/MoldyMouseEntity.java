@@ -2,13 +2,11 @@ package pl.maciej.cheesedimension.entity;
 
 import java.util.EnumSet;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.RevengeGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
@@ -52,7 +50,7 @@ public class MoldyMouseEntity extends HostileEntity {
 	protected void initGoals() {
 		goalSelector.add(1, new SwimGoal(this));
 		goalSelector.add(2, new IgniteGoal(this));
-		goalSelector.add(4, new MeleeAttackGoal(this, 1.0, false));
+		goalSelector.add(4, new ChaseTargetGoal(this, 1.1));
 		goalSelector.add(5, new WanderAroundFarGoal(this, 0.8));
 		goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
 		goalSelector.add(6, new LookAroundGoal(this));
@@ -94,12 +92,6 @@ public class MoldyMouseEntity extends HostileEntity {
 		}
 	}
 
-	/** The mouse only "attacks" by exploding, so melee does no damage (same as a creeper). */
-	@Override
-	public boolean tryAttack(Entity target) {
-		return true;
-	}
-
 	public int getFuseSpeed() {
 		return dataTracker.get(FUSE_SPEED);
 	}
@@ -126,6 +118,61 @@ public class MoldyMouseEntity extends HostileEntity {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return SoundEvents.ENTITY_RABBIT_DEATH;
+	}
+
+	/**
+	 * Runs towards the target. The vanilla MeleeAttackGoal is not used because it stops
+	 * as soon as the target is a creative-mode player.
+	 */
+	private static class ChaseTargetGoal extends Goal {
+		private final MoldyMouseEntity mouse;
+		private final double speed;
+		private int repathDelay;
+
+		ChaseTargetGoal(MoldyMouseEntity mouse, double speed) {
+			this.mouse = mouse;
+			this.speed = speed;
+			setControls(EnumSet.of(Control.MOVE, Control.LOOK));
+		}
+
+		@Override
+		public boolean canStart() {
+			LivingEntity target = mouse.getTarget();
+			return target != null && target.isAlive();
+		}
+
+		@Override
+		public boolean shouldContinue() {
+			return canStart();
+		}
+
+		@Override
+		public void start() {
+			repathDelay = 0;
+		}
+
+		@Override
+		public void stop() {
+			mouse.getNavigation().stop();
+		}
+
+		@Override
+		public boolean shouldRunEveryTick() {
+			return true;
+		}
+
+		@Override
+		public void tick() {
+			LivingEntity target = mouse.getTarget();
+			if (target == null) {
+				return;
+			}
+			mouse.getLookControl().lookAt(target, 30.0f, 30.0f);
+			if (--repathDelay <= 0) {
+				repathDelay = 4 + mouse.getRandom().nextInt(7);
+				mouse.getNavigation().startMovingTo(target, speed);
+			}
+		}
 	}
 
 	/**
