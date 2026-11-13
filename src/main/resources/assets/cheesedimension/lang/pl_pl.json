@@ -2,9 +2,12 @@
   "itemGroup.cheesedimension.main": "Serowy wymiar",
   "block.cheesedimension.cheese_block": "Blok sera",
   "block.cheesedimension.cheese_portal": "Serowy portal",
+  "block.cheesedimension.cheese_sauce": "Sos serowy",
   "item.cheesedimension.cheese": "Ser",
   "item.cheesedimension.cheese_knife": "Nóż do sera",
+  "item.cheesedimension.cheese_sauce_bucket": "Wiadro sosu serowego",
   "item.cheesedimension.mouse_spawn_egg": "Jajo przywołujące mysz",
   "entity.cheesedimension.mouse": "Mysz",
-  "biome.cheesedimension.cheese_plains": "Serowe równiny"
+  "biome.cheesedimension.cheese_plains": "Serowe równiny",
+  "biome.cheesedimension.cheese_sauce_sea": "Morze sosu serowego"
 }
