@@ -1,47 +1,73 @@
-# Cheese Dimension (Fabric 1.21.1)
+# Cheese Dimension
 
-Mod dodaje serowy wymiar, portal z bloków sera oraz myszy, które w nim mieszkają.
+A Fabric mod for Minecraft Java Edition 1.21.1 that adds a cheese dimension, a cheese portal to get there, and mice that live in it.
 
-## Jak zbudować i uruchomić
+## Features
 
-Wymagania: JDK 21 i dostęp do internetu (Gradle pobierze Minecrafta i biblioteki).
+- **Cheese dimension**: terrain made entirely of cheese, with a surface around y=90 and holes inside like Swiss cheese. It has a normal day and night cycle and no hostile mobs.
+- **Cheese portal**: build a frame from cheese blocks (like a Nether portal) and light it with a cheese knife. A return portal is built automatically on the other side if none is found within 8 blocks.
+- **Mice**: small animals that only spawn on cheese. They follow players holding cheese and breed when fed cheese.
+- **Items and blocks**: cheese, block of cheese, cheese knife, mouse spawn egg. All are in the "Cheese Dimension" creative tab.
+- **Languages**: English and Polish.
+
+## Requirements
+
+- JDK 21
+- Minecraft 1.21.1 with [Fabric Loader](https://fabricmc.net/use/) and [Fabric API](https://modrinth.com/mod/fabric-api) (to play)
+- Internet access on the first build (Gradle downloads Minecraft and libraries)
+
+## Build and run
 
 ```
-./gradlew runClient     # uruchamia grę z modem do testów
-./gradlew build         # tworzy plik .jar w build/libs/
+./gradlew runClient    # start the game with the mod for testing
+./gradlew build        # build the mod, output in build/libs/
 ```
 
-Na Windows użyj `gradlew.bat`. Gotowy `.jar` (bez `-sources`) wrzuć do folderu `mods` razem z Fabric API dla 1.21.1.
+On Windows use `gradlew.bat`. To install the mod, copy `build/libs/cheese-dimension-<version>.jar` (not the `-sources` jar) into your `mods` folder together with Fabric API.
 
-Jeśli Gradle narzeka na wersje, sprawdź aktualne wartości na https://fabricmc.net/develop i wpisz je w `gradle.properties` (`loader_version`, `fabric_version`) oraz w `build.gradle` (wersja pluginu Loom).
+If Gradle complains about versions, check https://fabricmc.net/develop and update `loader_version` and `fabric_version` in `gradle.properties` and the Loom version in `build.gradle`.
 
-## Jak grać
+## How to play
 
-1. Zrób ser: wiadro mleka daje 4 sery (receptura bezkształtna, wiadro wraca).
-2. Z 4 serów (2x2) zrób blok sera. Nóż do sera: żelazo, ser, patyk w pionie.
-3. Zbuduj ramę jak do portalu Netheru: bloki sera, wnętrze od 2x3 do 21x21.
-4. Kliknij nożem do sera blok ramy od środka. Wnętrze zapali się żółtym portalem.
-5. Wejdź i poczekaj kilka sekund (w trybie kreatywnym od razu).
+1. Get cheese. Put a milk bucket in the crafting grid to get 4 cheese (the bucket is returned). Cows give milk.
+2. Craft a block of cheese from 4 cheese (2x2). A block can be turned back into 4 cheese.
+3. Craft a cheese knife: iron ingot on top, cheese in the middle, stick at the bottom.
+4. Build a portal frame from cheese blocks, standing upright. The interior must be at least 2 wide and 3 tall (up to 21x21), and the bottom row of the frame must be cheese. Corners are optional.
+   ```
+   . C C .
+   C . . C
+   C . . C
+   C . . C
+   . C C .
+   ```
+5. Right-click a frame block from the inside with the cheese knife. The interior fills with the portal. Lighting works only in the Overworld and in the cheese dimension.
+6. Step in and wait a few seconds (instant in creative mode).
 
-Po drugiej stronie powstaje portal powrotny. Myszy pojawiają się na serowym terenie, idą za serem w ręce i rozmnażają się nim. Jajko myszy jest w zakładce „Serowy wymiar".
+## Project layout
 
-## Struktura
+```
+src/main/java/pl/maciej/cheesedimension/
+  CheeseDimensionMod.java      main entrypoint
+  ModBlocks / ModItems / ModEntities / ModDimensions
+  block/CheesePortalBlock      portal block and teleport logic
+  item/CheeseKnifeItem         lights the portal
+  portal/CheesePortalHelper    frame detection, portal search and creation
+  entity/MouseEntity           mouse mob
+  client/                      client entrypoint, mouse model and renderer
+src/main/resources/
+  fabric.mod.json
+  assets/cheesedimension/      blockstates, models, textures, lang
+  data/cheesedimension/        dimension, dimension_type, worldgen, recipes, loot tables
+```
 
-- `src/main/java/.../` kod: bloki, przedmioty, mysz, portal (`portal/CheesePortalHelper`), klient (`client/`)
-- `src/main/resources/data/cheesedimension/` wymiar, typ wymiaru, generacja terenu i biom, receptury
-- `src/main/resources/assets/cheesedimension/` modele, tekstury, tłumaczenia (en, pl)
+The dimension is fully data-driven. Terrain is defined in `worldgen/noise_settings/cheese.json` and the only biome in `worldgen/biome/cheese_plains.json`.
 
-## Wymiar
+## Known limitations
 
-Teren generuje własny `noise_settings`: blok bazowy to ser, powierzchnia około y=90, w środku dziury jak w serze szwajcarskim. Biom `cheese_plains` ma tylko myszy jako moby.
+- Mouse sounds are borrowed from the rabbit.
+- The cheese dimension has no structures, trees or other decoration yet.
+- Portal particles and sounds are not implemented.
 
-## Co sprawdzić po pierwszym uruchomieniu
+## License
 
-Nie mogłem tego skompilować ani uruchomić (środowisko bez dostępu do Gradle i Mojang), więc projekt jest napisany, ale niesprawdzony w grze. Jeśli kompilator zgłosi błąd, najbardziej prawdopodobne miejsca to:
-
-- `CheesePortalBlock`: sygnatury z interfejsu `Portal` (`getPortalDelay`, `getPortalEffect`, `createTeleportTarget`) i konstruktor `TeleportTarget`
-- `ModEntities`: `SpawnRestriction.register` (w razie błędu dostępu dodaj access widener)
-- `MouseEntity.canSpawn`: typ `SpawnReason`
-- pliki JSON generacji świata: błąd daje komunikat w logu przy wczytywaniu świata
-
-Nazwy w kodzie to Yarn `1.21.1+build.3`.
+MIT, see [LICENSE](LICENSE).
