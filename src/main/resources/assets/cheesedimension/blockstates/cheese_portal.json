@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "cheesedimension:block/cheese_portal_ns"
+    },
+    "axis=z": {
+      "model": "cheesedimension:block/cheese_portal_ew"
+    }
+  }
+}

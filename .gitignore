@@ -1,0 +1,15 @@
+.gradle/
+build/
+run/
+out/
+Claude outputs/
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+bin/
+*.log

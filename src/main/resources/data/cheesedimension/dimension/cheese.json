@@ -1,0 +1,11 @@
+{
+  "type": "cheesedimension:cheese",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "cheesedimension:cheese",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "cheesedimension:cheese_plains"
+    }
+  }
+}

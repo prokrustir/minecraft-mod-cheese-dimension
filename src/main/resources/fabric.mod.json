@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "cheesedimension",
+  "version": "${version}",
+  "name": "Cheese Dimension",
+  "description": "Serowy wymiar z serowym portalem i myszami.",
+  "authors": ["Maciej"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["pl.maciej.cheesedimension.CheeseDimensionMod"],
+    "client": ["pl.maciej.cheesedimension.client.CheeseDimensionClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "itemGroup.cheesedimension.main": "Serowy wymiar",
+  "block.cheesedimension.cheese_block": "Blok sera",
+  "block.cheesedimension.cheese_portal": "Serowy portal",
+  "item.cheesedimension.cheese": "Ser",
+  "item.cheesedimension.cheese_knife": "Nóż do sera",
+  "item.cheesedimension.mouse_spawn_egg": "Jajo przywołujące mysz",
+  "entity.cheesedimension.mouse": "Mysz",
+  "biome.cheesedimension.cheese_plains": "Serowe równiny"
+}

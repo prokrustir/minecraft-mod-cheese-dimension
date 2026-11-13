@@ -1,0 +1,10 @@
+{
+  "itemGroup.cheesedimension.main": "Cheese Dimension",
+  "block.cheesedimension.cheese_block": "Block of Cheese",
+  "block.cheesedimension.cheese_portal": "Cheese Portal",
+  "item.cheesedimension.cheese": "Cheese",
+  "item.cheesedimension.cheese_knife": "Cheese Knife",
+  "item.cheesedimension.mouse_spawn_egg": "Mouse Spawn Egg",
+  "entity.cheesedimension.mouse": "Mouse",
+  "biome.cheesedimension.cheese_plains": "Cheese Plains"
+}
