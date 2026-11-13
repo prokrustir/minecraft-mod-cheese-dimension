@@ -2,6 +2,8 @@ package pl.maciej.cheesedimension;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
@@ -27,6 +29,11 @@ public class ModBlocks {
 					.luminance(state -> 11)
 					.dropsNothing()
 					.pistonBehavior(PistonBehavior.BLOCK)));
+
+	public static final Block CHEESE_SAUCE = register("cheese_sauce",
+			new FluidBlock(ModFluids.STILL_CHEESE_SAUCE, AbstractBlock.Settings.copy(Blocks.WATER)
+					.mapColor(MapColor.ORANGE)) {
+			});
 
 	private static Block register(String name, Block block) {
 		return Registry.register(Registries.BLOCK, CheeseDimensionMod.id(name), block);

@@ -7,7 +7,8 @@ A Fabric mod for Minecraft Java Edition 1.21.1 that adds a cheese dimension, a c
 - **Cheese dimension**: terrain made entirely of cheese, with a surface around y=90 and holes inside like Swiss cheese. It has a normal day and night cycle and no hostile mobs.
 - **Cheese portal**: build a frame from cheese blocks (like a Nether portal) and light it with a cheese knife. A return portal is built automatically on the other side if none is found within 8 blocks.
 - **Mice**: small animals that only spawn on cheese. They follow players holding cheese and breed when fed cheese.
-- **Items and blocks**: cheese, block of cheese, cheese knife, mouse spawn egg. All are in the "Cheese Dimension" creative tab.
+- **Cheese sauce sea**: the low parts of the cheese dimension (below y=80) are flooded with cheese sauce. It is a fluid that works like water: it flows, makes new sources, you can swim in it, and you can scoop it with an empty bucket to get a cheese sauce bucket (and place it again).
+- **Items and blocks**: cheese, block of cheese, cheese knife, cheese sauce bucket, mouse spawn egg. All are in the "Cheese Dimension" creative tab.
 - **Languages**: English and Polish.
 
 ## Requirements
@@ -48,7 +49,8 @@ If Gradle complains about versions, check https://fabricmc.net/develop and updat
 ```
 src/main/java/pl/maciej/cheesedimension/
   CheeseDimensionMod.java      main entrypoint
-  ModBlocks / ModItems / ModEntities / ModDimensions
+  ModBlocks / ModItems / ModEntities / ModDimensions / ModFluids
+  fluid/CheeseSauceFluid       still and flowing cheese sauce
   block/CheesePortalBlock      portal block and teleport logic
   item/CheeseKnifeItem         lights the portal
   portal/CheesePortalHelper    frame detection, portal search and creation

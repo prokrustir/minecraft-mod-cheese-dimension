@@ -12,7 +12,8 @@ public class CheeseDimensionMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		// Kolejnosc ma znaczenie: blok sera i jedzenie sa potrzebne myszy i jajku.
+		// Order matters: the sauce block needs the fluids, and the bucket item needs the fluid.
+		ModFluids.register();
 		ModBlocks.register();
 		ModEntities.register();
 		ModItems.register();
