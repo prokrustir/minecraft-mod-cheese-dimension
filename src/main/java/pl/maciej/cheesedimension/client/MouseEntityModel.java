@@ -9,12 +9,12 @@ import net.minecraft.client.model.ModelTransform;
 import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.SinglePartEntityModel;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
 import pl.maciej.cheesedimension.CheeseDimensionMod;
-import pl.maciej.cheesedimension.entity.MouseEntity;
 
 /** Prosty model myszy: tulow, glowa z uszami, ogon i cztery lapki. Tekstura 32x32. */
-public class MouseEntityModel extends SinglePartEntityModel<MouseEntity> {
+public class MouseEntityModel<T extends LivingEntity> extends SinglePartEntityModel<T> {
 	public static final EntityModelLayer LAYER =
 			new EntityModelLayer(CheeseDimensionMod.id("mouse"), "main");
 
@@ -71,7 +71,7 @@ public class MouseEntityModel extends SinglePartEntityModel<MouseEntity> {
 	}
 
 	@Override
-	public void setAngles(MouseEntity entity, float limbAngle, float limbDistance, float animationProgress,
+	public void setAngles(T entity, float limbAngle, float limbDistance, float animationProgress,
 						  float headYaw, float headPitch) {
 		this.getPart().traverse().forEach(ModelPart::resetTransform);
 

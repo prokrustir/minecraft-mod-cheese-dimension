@@ -18,9 +18,13 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
@@ -33,6 +37,12 @@ import pl.maciej.cheesedimension.ModItems;
 
 /** Mala mysz, ktora zyje w serowym wymiarze, lubi ser i rozmnaza sie nim. */
 public class MouseEntity extends AnimalEntity {
+	/** Ticks between eating moldy cheese and turning into a moldy mouse (100 = 5 s), so the player can get away. */
+	private static final int INFECTION_DELAY = 100;
+
+	/** -1 when healthy, otherwise ticks left until the transformation. */
+	private int infectionTicks = -1;
+
 	public MouseEntity(EntityType<? extends MouseEntity> entityType, World world) {
 		super(entityType, world);
 	}
@@ -58,6 +68,56 @@ public class MouseEntity extends AnimalEntity {
 	@Override
 	public boolean isBreedingItem(ItemStack stack) {
 		return stack.isOf(ModItems.CHEESE);
+	}
+
+	/** Feeding moldy cheese infects the mouse; it turns into a moldy mouse after a short delay. */
+	@Override
+	public ActionResult interactMob(PlayerEntity player, Hand hand) {
+		ItemStack stack = player.getStackInHand(hand);
+		if (stack.isOf(ModItems.MOLDY_CHEESE)) {
+			if (infectionTicks >= 0) {
+				return ActionResult.PASS;
+			}
+			if (!getWorld().isClient) {
+				infectionTicks = INFECTION_DELAY;
+				stack.decrementUnlessCreative(1, player);
+				playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0f, 1.0f);
+			}
+			return ActionResult.success(getWorld().isClient);
+		}
+		return super.interactMob(player, hand);
+	}
+
+	@Override
+	protected void mobTick() {
+		super.mobTick();
+		if (infectionTicks < 0 || !(getWorld() instanceof ServerWorld world)) {
+			return;
+		}
+		if (infectionTicks > 0) {
+			infectionTicks--;
+			if (infectionTicks % 5 == 0) {
+				world.spawnParticles(ParticleTypes.COMPOSTER, getX(), getBodyY(0.5), getZ(), 3, 0.2, 0.2, 0.2, 0.02);
+			}
+			return;
+		}
+		MoldyMouseEntity moldy = convertTo(ModEntities.MOLDY_MOUSE, true);
+		if (moldy != null) {
+			moldy.setPersistent();
+			moldy.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, 1.0f, 1.5f);
+		}
+	}
+
+	@Override
+	public void writeCustomDataToNbt(NbtCompound nbt) {
+		super.writeCustomDataToNbt(nbt);
+		nbt.putInt("InfectionTicks", infectionTicks);
+	}
+
+	@Override
+	public void readCustomDataFromNbt(NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		infectionTicks = nbt.contains("InfectionTicks") ? nbt.getInt("InfectionTicks") : -1;
 	}
 
 	@Nullable
