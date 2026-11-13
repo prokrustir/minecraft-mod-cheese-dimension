@@ -1,5 +1,5 @@
 {
-  "sea_level": 80,
+  "sea_level": 84,
   "disable_mob_generation": false,
   "aquifers_enabled": false,
   "ore_veins_enabled": false,
@@ -51,7 +51,12 @@
     "lava": 0,
     "temperature": 0,
     "vegetation": 0,
-    "continents": 0,
+    "continents": {
+      "type": "minecraft:noise",
+      "noise": "minecraft:surface",
+      "xz_scale": 1.0,
+      "y_scale": 0.0
+    },
     "erosion": 0,
     "depth": 0,
     "ridges": 0,
