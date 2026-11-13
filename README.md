@@ -8,7 +8,7 @@ A Fabric mod for Minecraft Java Edition 1.21.1 that adds a cheese dimension, a c
 - **Cheese portal**: build a frame from cheese blocks (like a Nether portal) and light it with a cheese knife. A return portal is built automatically on the other side if none is found within 8 blocks.
 - **Mice**: small animals that only spawn on cheese. They follow players holding cheese and breed when fed cheese.
 - **Cheese sauce sea**: the low parts of the cheese dimension (below y=84) are flooded with cheese sauce and form their own biome, "Cheese Sauce Sea". It is a fluid that works like water: it flows, makes new sources, you can swim in it, and you can scoop it with an empty bucket to get a cheese sauce bucket (and place it again).
-- **Moldy cheese**: a whitish cheese with green mold. Eating it poisons you for 10 seconds (it can be eaten at full hunger). Craft it from 1 cheese + 1 fermented spider eye; 4 moldy cheese make a block of moldy cheese, which turns back into 4 moldy cheese.
+- **Moldy cheese**: a whitish cheese with green mold. Eating it poisons you for 10 seconds (it can be eaten at full hunger). Craft it from 1 cheese + 1 fermented spider eye; 4 moldy cheese make a block of moldy cheese, which turns back into 4 moldy cheese. Veins of moldy cheese blocks also generate naturally inside the cheese dimension (y=20-110, both biomes).
 - **Items and blocks**: cheese, moldy cheese, block of cheese, block of moldy cheese, cheese knife, cheese sauce bucket, mouse spawn egg. All are in the "Cheese Dimension" creative tab.
 - **Languages**: English and Polish.
 
