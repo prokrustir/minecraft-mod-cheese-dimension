@@ -1,9 +1,11 @@
 {
   "itemGroup.cheesedimension.main": "Serowy wymiar",
   "block.cheesedimension.cheese_block": "Blok sera",
+  "block.cheesedimension.moldy_cheese_block": "Blok sera pleśniowego",
   "block.cheesedimension.cheese_portal": "Serowy portal",
   "block.cheesedimension.cheese_sauce": "Sos serowy",
   "item.cheesedimension.cheese": "Ser",
+  "item.cheesedimension.moldy_cheese": "Ser pleśniowy",
   "item.cheesedimension.cheese_knife": "Nóż do sera",
   "item.cheesedimension.cheese_sauce_bucket": "Wiadro sosu serowego",
   "item.cheesedimension.mouse_spawn_egg": "Jajo przywołujące mysz",

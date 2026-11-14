@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "cheesedimension:moldy_cheese"
+    }
+  },
+  "result": {
+    "id": "cheesedimension:moldy_cheese_block",
+    "count": 1
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "cheesedimension:block/moldy_cheese_block"
+  }
+}
