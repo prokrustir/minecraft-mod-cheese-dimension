@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "ingredient": {
+    "item": "minecraft:milk_bucket"
+  },
+  "result": {
+    "id": "cheesedimension:cheese_block"
+  },
+  "experience": 0.35,
+  "cookingtime": 200
+}

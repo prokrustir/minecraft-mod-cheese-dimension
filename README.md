@@ -31,7 +31,7 @@ If Gradle complains about versions, check https://fabricmc.net/develop and updat
 
 ## How to play
 
-1. Get cheese. Put a milk bucket in the crafting grid to get 4 cheese (the bucket is returned). Cows give milk.
+1. Get cheese. Put a milk bucket in the crafting grid to get 4 cheese (the bucket is returned). Cows give milk. Smelting a milk bucket in a furnace gives a whole block of cheese instead (the bucket is lost).
 2. Craft a block of cheese from 4 cheese (2x2). A block can be turned back into 4 cheese.
 3. Craft a cheese knife: iron ingot on top, cheese in the middle, stick at the bottom.
 4. Build a portal frame from cheese blocks, standing upright. The interior must be at least 2 wide and 3 tall (up to 21x21), and the bottom row of the frame must be cheese. Corners are optional.
