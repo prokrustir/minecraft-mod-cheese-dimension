@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "cheesedimension:moldy_cheese_block"
+    }
+  ],
+  "result": {
+    "id": "cheesedimension:moldy_cheese",
+    "count": 4
+  }
+}
