@@ -10,6 +10,7 @@ A Fabric mod for Minecraft Java Edition 1.21.1 that adds a cheese dimension, a c
 - **Cheese sauce sea**: the low parts of the cheese dimension (below y=84) are flooded with cheese sauce and form their own biome, "Cheese Sauce Sea". It is a fluid that works like water: it flows, makes new sources, you can swim in it, and you can scoop it with an empty bucket to get a cheese sauce bucket (and place it again).
 - **Cheese castle**: a 20x20x20 castle of cheese and moldy cheese blocks (outer wall with a south gate, four corner towers, a two-storey keep, ladders, torches and two loot chests). There is exactly one castle per world (placed like a stronghold, about 100-200 blocks from the world origin of the cheese dimension, on the Cheese Plains) and it is rotated randomly. Find it with `/locate structure cheesedimension:cheese_castle` while in the cheese dimension.
 - **Moldy cheese**: a whitish cheese with green mold. Eating it poisons you for 10 seconds (it can be eaten at full hunger). Craft it from 1 cheese + 1 fermented spider eye; 4 moldy cheese make a block of moldy cheese, which turns back into 4 moldy cheese. Veins of moldy cheese blocks also generate naturally inside the cheese dimension (y=20-110, both biomes).
+- **Moldy mice**: feed a mouse moldy cheese (right click). After 5 seconds it turns into a green moldy mouse that chases the nearest player (also in creative mode, unlike a creeper) and explodes like a creeper (the explosion destroys blocks unless `mobGriefing` is off). This cannot be undone.
 - **Items and blocks**: cheese, moldy cheese, block of cheese, block of moldy cheese, cheese knife, cheese sauce bucket, mouse spawn egg. All are in the "Cheese Dimension" creative tab.
 - **Languages**: English and Polish.
 
@@ -56,7 +57,8 @@ src/main/java/pl/maciej/cheesedimension/
   block/CheesePortalBlock      portal block and teleport logic
   item/CheeseKnifeItem         lights the portal
   portal/CheesePortalHelper    frame detection, portal search and creation
-  entity/MouseEntity           mouse mob
+  entity/MouseEntity           mouse mob (turns into a moldy mouse when fed moldy cheese)
+  entity/MoldyMouseEntity      exploding green mouse
   client/                      client entrypoint, mouse model and renderer
 src/main/resources/
   fabric.mod.json

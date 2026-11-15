@@ -7,11 +7,11 @@ import net.minecraft.util.Identifier;
 import pl.maciej.cheesedimension.CheeseDimensionMod;
 import pl.maciej.cheesedimension.entity.MouseEntity;
 
-public class MouseEntityRenderer extends MobEntityRenderer<MouseEntity, MouseEntityModel> {
+public class MouseEntityRenderer extends MobEntityRenderer<MouseEntity, MouseEntityModel<MouseEntity>> {
 	private static final Identifier TEXTURE = CheeseDimensionMod.id("textures/entity/mouse.png");
 
 	public MouseEntityRenderer(EntityRendererFactory.Context context) {
-		super(context, new MouseEntityModel(context.getPart(MouseEntityModel.LAYER)), 0.2f);
+		super(context, new MouseEntityModel<>(context.getPart(MouseEntityModel.LAYER)), 0.2f);
 	}
 
 	@Override
