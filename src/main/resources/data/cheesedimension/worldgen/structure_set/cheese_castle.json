@@ -6,9 +6,13 @@
     }
   ],
   "placement": {
-    "type": "minecraft:random_spread",
-    "spacing": 14,
-    "separation": 6,
+    "type": "minecraft:concentric_rings",
+    "distance": 4,
+    "spread": 1,
+    "count": 1,
+    "preferred_biomes": [
+      "cheesedimension:cheese_plains"
+    ],
     "salt": 1948273
   }
 }
