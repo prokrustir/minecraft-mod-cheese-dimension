@@ -8,6 +8,8 @@ import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.world.Heightmap;
+import net.minecraft.entity.passive.IronGolemEntity;
+import pl.maciej.cheesedimension.entity.CheeseGolemEntity;
 import pl.maciej.cheesedimension.entity.MoldyMouseEntity;
 import pl.maciej.cheesedimension.entity.MouseEntity;
 import pl.maciej.cheesedimension.entity.RatKingEntity;
@@ -37,7 +39,16 @@ public class ModEntities {
 					.maxTrackingRange(10)
 					.build("rat_king"));
 
+	public static final EntityType<CheeseGolemEntity> CHEESE_GOLEM = Registry.register(
+			Registries.ENTITY_TYPE,
+			CheeseDimensionMod.id("cheese_golem"),
+			EntityType.Builder.create(CheeseGolemEntity::new, SpawnGroup.MISC)
+					.dimensions(1.4f, 2.7f)
+					.maxTrackingRange(10)
+					.build("cheese_golem"));
+
 	public static void register() {
+		FabricDefaultAttributeRegistry.register(CHEESE_GOLEM, IronGolemEntity.createIronGolemAttributes());
 		FabricDefaultAttributeRegistry.register(RAT_KING, RatKingEntity.createRatKingAttributes());
 		FabricDefaultAttributeRegistry.register(MOUSE, MouseEntity.createMouseAttributes());
 		FabricDefaultAttributeRegistry.register(MOLDY_MOUSE, MoldyMouseEntity.createMoldyMouseAttributes());

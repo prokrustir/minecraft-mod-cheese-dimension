@@ -1,47 +1,18 @@
 #!/usr/bin/env python3
 """Generates the cheese castle structure template (20x20x20) as a Minecraft structure .nbt file.
 
-Usage: python3 -I tools/generate_cheese_castle.py src/main/resources/data/cheesedimension/structure/cheese_castle.nbt
+Usage: python3 tools/generate_cheese_castle.py src/main/resources/data/cheesedimension/structure/cheese_castle.nbt
 
 Edit the layout below and run the script again; the .nbt is a binary file that cannot be reviewed by hand.
 Axes: x = east, z = south, y = up. The gate is in the south wall (z = 19); the whole structure is
 rotated randomly when it is generated in the world.
 """
-import gzip
 import random
-import struct
 import sys
 
+import nbt
+
 N = 20
-DATA_VERSION = 3955  # Minecraft 1.21.1
-
-TAG_IDS = {"byte": 1, "int": 3, "double": 6, "string": 8, "list": 9, "compound": 10}
-
-
-def _string(value):
-    raw = value.encode("utf-8")
-    return struct.pack(">H", len(raw)) + raw
-
-
-def _payload(tag, value):
-    if tag == "byte":
-        return struct.pack(">b", value)
-    if tag == "int":
-        return struct.pack(">i", value)
-    if tag == "double":
-        return struct.pack(">d", value)
-    if tag == "string":
-        return _string(value)
-    if tag == "list":
-        element_tag, items = value
-        return (bytes([TAG_IDS[element_tag]]) + struct.pack(">i", len(items))
-                + b"".join(_payload(element_tag, item) for item in items))
-    if tag == "compound":
-        out = b""
-        for key, (child_tag, child_value) in value.items():
-            out += bytes([TAG_IDS[child_tag]]) + _string(key) + _payload(child_tag, child_value)
-        return out + b"\x00"
-    raise ValueError(tag)
 
 
 # Block palette: key -> (block name, properties)
@@ -224,17 +195,13 @@ def write_nbt(path):
     }
 
     root = {
-        "DataVersion": ("int", DATA_VERSION),
+        "DataVersion": ("int", nbt.DATA_VERSION),
         "size": ("list", ("int", [N, N, N])),
         "palette": ("list", ("compound", palette)),
         "blocks": ("list", ("compound", blocks)),
         "entities": ("list", ("compound", [king])),
     }
-    data = bytes([TAG_IDS["compound"]]) + _string("") + _payload("compound", root)
-    with open(path, "wb") as raw:
-        # mtime=0 keeps the output byte-for-byte reproducible
-        with gzip.GzipFile(fileobj=raw, mode="wb", mtime=0) as gz:
-            gz.write(data)
+    nbt.write_gzipped(path, root)
 
 
 def preview():

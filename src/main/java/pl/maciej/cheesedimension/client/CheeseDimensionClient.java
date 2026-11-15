@@ -29,5 +29,6 @@ public class CheeseDimensionClient implements ClientModInitializer {
 		EntityRendererRegistry.register(ModEntities.MOLDY_MOUSE, MoldyMouseEntityRenderer::new);
 		EntityModelLayerRegistry.registerModelLayer(RatKingModel.LAYER, RatKingModel::getTexturedModelData);
 		EntityRendererRegistry.register(ModEntities.RAT_KING, RatKingEntityRenderer::new);
+		EntityRendererRegistry.register(ModEntities.CHEESE_GOLEM, CheeseGolemEntityRenderer::new);
 	}
 }
