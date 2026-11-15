@@ -11,6 +11,7 @@
     "main": ["pl.maciej.cheesedimension.CheeseDimensionMod"],
     "client": ["pl.maciej.cheesedimension.client.CheeseDimensionClient"]
   },
+  "mixins": ["cheesedimension.mixins.json"],
   "depends": {
     "fabricloader": ">=0.16.0",
     "minecraft": "~1.21.1",
