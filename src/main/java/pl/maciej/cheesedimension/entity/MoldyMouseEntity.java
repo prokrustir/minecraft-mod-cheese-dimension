@@ -19,7 +19,6 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
@@ -36,9 +35,6 @@ public class MoldyMouseEntity extends HostileEntity {
 
 	private int lastFuseTime;
 	private int currentFuseTime;
-
-	/** Minions of the Rat King hurt players but do not break blocks, so the castle survives the fight. */
-	private boolean blockSafe;
 
 	public MoldyMouseEntity(EntityType<? extends MoldyMouseEntity> entityType, World world) {
 		super(entityType, world);
@@ -91,26 +87,9 @@ public class MoldyMouseEntity extends HostileEntity {
 	private void explode() {
 		if (!getWorld().isClient) {
 			// ExplosionSourceType.MOB respects the mobGriefing game rule, as for a creeper.
-			getWorld().createExplosion(this, getX(), getY(), getZ(), EXPLOSION_POWER,
-					blockSafe ? World.ExplosionSourceType.NONE : World.ExplosionSourceType.MOB);
+			getWorld().createExplosion(this, getX(), getY(), getZ(), EXPLOSION_POWER, World.ExplosionSourceType.MOB);
 			discard();
 		}
-	}
-
-	public void setBlockSafe(boolean blockSafe) {
-		this.blockSafe = blockSafe;
-	}
-
-	@Override
-	public void writeCustomDataToNbt(NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
-		nbt.putBoolean("BlockSafe", blockSafe);
-	}
-
-	@Override
-	public void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
-		blockSafe = nbt.getBoolean("BlockSafe");
 	}
 
 	public int getFuseSpeed() {

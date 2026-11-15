@@ -32,8 +32,8 @@ public class ModEntities {
 	public static final EntityType<RatKingEntity> RAT_KING = Registry.register(
 			Registries.ENTITY_TYPE,
 			CheeseDimensionMod.id("rat_king"),
-			EntityType.Builder.create(RatKingEntity::new, SpawnGroup.MONSTER)
-					.dimensions(1.0f, 0.75f)
+			EntityType.Builder.create(RatKingEntity::new, SpawnGroup.MISC)
+					.dimensions(0.6f, 1.8f)
 					.maxTrackingRange(10)
 					.build("rat_king"));
 

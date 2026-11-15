@@ -14,5 +14,13 @@
   "item.cheesedimension.rat_king_spawn_egg": "Jajo przywołujące Szczurzego Króla",
   "entity.cheesedimension.moldy_mouse": "Pleśniowa mysz",
   "biome.cheesedimension.cheese_plains": "Serowe równiny",
-  "biome.cheesedimension.cheese_sauce_sea": "Morze sosu serowego"
+  "biome.cheesedimension.cheese_sauce_sea": "Morze sosu serowego",
+  "dialogue.cheesedimension.rat_king.1": "Witaj, wędrowcze! Wreszcie ktoś odwiedził mój zamek. Rzadko ktoś tu trafia.",
+  "dialogue.cheesedimension.rat_king.2": "Panuję nad tymi serowymi równinami, odkąd pisnęła pierwsza mysz. Morze sosu, zamek, myszy - wszystko to moje.",
+  "dialogue.cheesedimension.rat_king.3": "Moje myszy kochają ser, ale strzeż się pleśni. Kto ją zje, ten długo tego nie zapomni.",
+  "dialogue.cheesedimension.rat_king.4": "Nakarm mysz kawałkiem pleśniowego sera, a zamieni się w pleśniową mysz. Takie lubią odejść z hukiem.",
+  "dialogue.cheesedimension.rat_king.5": "Morze sosu serowego jest ciepłe i bezpieczne. Możesz w nim pływać, a nawet nabrać sobie wiadro.",
+  "dialogue.cheesedimension.rat_king.6": "Ten zamek kiedyś rozbrzmiewał ucztami. Teraz zostałem tylko ja i moje skrzynie.",
+  "dialogue.cheesedimension.rat_king.7": "Zajrzyj do skrzyń, jeśli jesteś głodny. Weź, co potrzebujesz, ale zostaw coś dla następnego gościa.",
+  "dialogue.cheesedimension.rat_king.8": "Wracaj, kiedy chcesz, wędrowcze. Drzwi mojego zamku są zawsze otwarte."
 }
