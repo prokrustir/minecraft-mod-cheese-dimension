@@ -10,6 +10,19 @@
   "item.cheesedimension.cheese_sauce_bucket": "Cheese Sauce Bucket",
   "item.cheesedimension.mouse_spawn_egg": "Mouse Spawn Egg",
   "entity.cheesedimension.mouse": "Mouse",
+  "entity.cheesedimension.rat_king": "Rat King",
+  "entity.cheesedimension.cheese_golem": "Cheese Golem",
+  "item.cheesedimension.cheese_golem_spawn_egg": "Cheese Golem Spawn Egg",
+  "item.cheesedimension.rat_king_spawn_egg": "Rat King Spawn Egg",
+  "entity.cheesedimension.moldy_mouse": "Moldy Mouse",
   "biome.cheesedimension.cheese_plains": "Cheese Plains",
-  "biome.cheesedimension.cheese_sauce_sea": "Cheese Sauce Sea"
+  "biome.cheesedimension.cheese_sauce_sea": "Cheese Sauce Sea",
+  "dialogue.cheesedimension.rat_king.1": "Welcome, traveller! A visitor in my castle at last. Few ever find their way here.",
+  "dialogue.cheesedimension.rat_king.2": "I have ruled these cheese plains since before the first mouse squeaked. The sauce sea, the castle, the mice - all of it is mine.",
+  "dialogue.cheesedimension.rat_king.3": "My mice love cheese, but beware of the mold. Whoever eats it will not forget it soon.",
+  "dialogue.cheesedimension.rat_king.4": "Feed a mouse a piece of moldy cheese and it turns into a moldy mouse. They like to go out with a bang.",
+  "dialogue.cheesedimension.rat_king.5": "The cheese sauce sea is warm and safe. You can swim in it, and even scoop up a bucket of it.",
+  "dialogue.cheesedimension.rat_king.6": "This castle once rang with feasts. Now it is only me and my chests.",
+  "dialogue.cheesedimension.rat_king.7": "Open the chests if you are hungry. Take what you need, but leave something for the next guest.",
+  "dialogue.cheesedimension.rat_king.8": "Come back whenever you like, traveller. The doors of my castle are always open."
 }

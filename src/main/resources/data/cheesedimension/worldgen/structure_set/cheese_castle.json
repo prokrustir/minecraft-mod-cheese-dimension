@@ -1,0 +1,18 @@
+{
+  "structures": [
+    {
+      "structure": "cheesedimension:cheese_castle",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:concentric_rings",
+    "distance": 2,
+    "spread": 1,
+    "count": 1,
+    "preferred_biomes": [
+      "cheesedimension:cheese_plains"
+    ],
+    "salt": 1948273
+  }
+}

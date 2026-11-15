@@ -13,3 +13,4 @@ Claude outputs/
 .settings/
 bin/
 *.log
+__pycache__/
