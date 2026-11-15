@@ -42,6 +42,9 @@ public class ModItems {
 	public static final Item MOUSE_SPAWN_EGG = register("mouse_spawn_egg",
 			new SpawnEggItem(ModEntities.MOUSE, 0x9E9E9E, 0xF4B6C2, new Item.Settings()));
 
+	public static final Item RAT_KING_SPAWN_EGG = register("rat_king_spawn_egg",
+			new SpawnEggItem(ModEntities.RAT_KING, 0x4A3F36, 0xE6B422, new Item.Settings()));
+
 	public static final RegistryKey<ItemGroup> GROUP_KEY =
 			RegistryKey.of(RegistryKeys.ITEM_GROUP, CheeseDimensionMod.id("main"));
 
@@ -61,6 +64,7 @@ public class ModItems {
 					entries.add(CHEESE_KNIFE);
 					entries.add(CHEESE_SAUCE_BUCKET);
 					entries.add(MOUSE_SPAWN_EGG);
+					entries.add(RAT_KING_SPAWN_EGG);
 				})
 				.build();
 		Registry.register(Registries.ITEM_GROUP, GROUP_KEY, group);

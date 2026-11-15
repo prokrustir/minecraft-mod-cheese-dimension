@@ -15,7 +15,7 @@ import sys
 N = 20
 DATA_VERSION = 3955  # Minecraft 1.21.1
 
-TAG_IDS = {"byte": 1, "int": 3, "string": 8, "list": 9, "compound": 10}
+TAG_IDS = {"byte": 1, "int": 3, "double": 6, "string": 8, "list": 9, "compound": 10}
 
 
 def _string(value):
@@ -28,6 +28,8 @@ def _payload(tag, value):
         return struct.pack(">b", value)
     if tag == "int":
         return struct.pack(">i", value)
+    if tag == "double":
+        return struct.pack(">d", value)
     if tag == "string":
         return _string(value)
     if tag == "list":
@@ -55,6 +57,10 @@ PALETTE = {
     "ladder_south": ("minecraft:ladder", {"facing": "south", "waterlogged": "false"}),
 }
 CHEST_LOOT = "cheesedimension:chests/cheese_castle"
+
+# Entities placed with the template: the Rat King stands in the middle of the keep's upper floor
+# (floor slab at y 9, so the standing level is y 10.0).
+RAT_KING_POS = (9.5, 10.0, 9.5)
 
 rnd = random.Random(2024)
 grid = {}
@@ -208,12 +214,21 @@ def write_nbt(path):
                     })
                 blocks.append(block)
 
+    king = {
+        "pos": ("list", ("double", list(RAT_KING_POS))),
+        "blockPos": ("list", ("int", [int(c) for c in RAT_KING_POS])),
+        "nbt": ("compound", {
+            "id": ("string", "cheesedimension:rat_king"),
+            "PersistenceRequired": ("byte", 1),
+        }),
+    }
+
     root = {
         "DataVersion": ("int", DATA_VERSION),
         "size": ("list", ("int", [N, N, N])),
         "palette": ("list", ("compound", palette)),
         "blocks": ("list", ("compound", blocks)),
-        "entities": ("list", ("compound", [])),
+        "entities": ("list", ("compound", [king])),
     }
     data = bytes([TAG_IDS["compound"]]) + _string("") + _payload("compound", root)
     with open(path, "wb") as raw:

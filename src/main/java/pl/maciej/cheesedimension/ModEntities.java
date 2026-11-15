@@ -10,6 +10,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.world.Heightmap;
 import pl.maciej.cheesedimension.entity.MoldyMouseEntity;
 import pl.maciej.cheesedimension.entity.MouseEntity;
+import pl.maciej.cheesedimension.entity.RatKingEntity;
 
 public class ModEntities {
 	public static final EntityType<MouseEntity> MOUSE = Registry.register(
@@ -28,7 +29,16 @@ public class ModEntities {
 					.maxTrackingRange(8)
 					.build("moldy_mouse"));
 
+	public static final EntityType<RatKingEntity> RAT_KING = Registry.register(
+			Registries.ENTITY_TYPE,
+			CheeseDimensionMod.id("rat_king"),
+			EntityType.Builder.create(RatKingEntity::new, SpawnGroup.MONSTER)
+					.dimensions(1.0f, 0.75f)
+					.maxTrackingRange(10)
+					.build("rat_king"));
+
 	public static void register() {
+		FabricDefaultAttributeRegistry.register(RAT_KING, RatKingEntity.createRatKingAttributes());
 		FabricDefaultAttributeRegistry.register(MOUSE, MouseEntity.createMouseAttributes());
 		FabricDefaultAttributeRegistry.register(MOLDY_MOUSE, MoldyMouseEntity.createMoldyMouseAttributes());
 		SpawnRestriction.register(
