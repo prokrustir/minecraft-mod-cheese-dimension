@@ -10,6 +10,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.world.Heightmap;
 import net.minecraft.entity.passive.IronGolemEntity;
 import pl.maciej.cheesedimension.entity.CheeseGolemEntity;
+import pl.maciej.cheesedimension.entity.FireMouseEntity;
 import pl.maciej.cheesedimension.entity.MoldyMouseEntity;
 import pl.maciej.cheesedimension.entity.MouseEntity;
 import pl.maciej.cheesedimension.entity.RatKingEntity;
@@ -30,6 +31,15 @@ public class ModEntities {
 					.dimensions(0.4f, 0.3f)
 					.maxTrackingRange(8)
 					.build("moldy_mouse"));
+
+	public static final EntityType<FireMouseEntity> FIRE_MOUSE = Registry.register(
+			Registries.ENTITY_TYPE,
+			CheeseDimensionMod.id("fire_mouse"),
+			EntityType.Builder.create(FireMouseEntity::new, SpawnGroup.MONSTER)
+					.dimensions(0.4f, 0.3f)
+					.makeFireImmune()
+					.maxTrackingRange(8)
+					.build("fire_mouse"));
 
 	public static final EntityType<RatKingEntity> RAT_KING = Registry.register(
 			Registries.ENTITY_TYPE,
@@ -52,6 +62,7 @@ public class ModEntities {
 		FabricDefaultAttributeRegistry.register(RAT_KING, RatKingEntity.createRatKingAttributes());
 		FabricDefaultAttributeRegistry.register(MOUSE, MouseEntity.createMouseAttributes());
 		FabricDefaultAttributeRegistry.register(MOLDY_MOUSE, MoldyMouseEntity.createMoldyMouseAttributes());
+		FabricDefaultAttributeRegistry.register(FIRE_MOUSE, FireMouseEntity.createFireMouseAttributes());
 		SpawnRestriction.register(
 				MOUSE,
 				SpawnLocationTypes.ON_GROUND,

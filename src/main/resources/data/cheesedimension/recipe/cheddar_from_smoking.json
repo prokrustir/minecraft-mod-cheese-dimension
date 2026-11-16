@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "ingredient": {
+    "item": "cheesedimension:cheese"
+  },
+  "result": {
+    "id": "cheesedimension:cheddar"
+  },
+  "experience": 0.35,
+  "cookingtime": 100
+}

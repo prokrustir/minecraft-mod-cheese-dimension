@@ -26,6 +26,12 @@ public class ModBlocks {
 					.strength(0.5f)
 					.sounds(BlockSoundGroup.SPONGE)));
 
+	public static final Block CHEDDAR_BLOCK = registerWithItem("cheddar_block",
+			new Block(AbstractBlock.Settings.create()
+					.mapColor(MapColor.ORANGE)
+					.strength(0.6f)
+					.sounds(BlockSoundGroup.SPONGE)));
+
 	public static final Block CHEESE_PORTAL = register("cheese_portal",
 			new CheesePortalBlock(AbstractBlock.Settings.create()
 					.mapColor(MapColor.YELLOW)

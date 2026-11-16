@@ -37,11 +37,16 @@ import pl.maciej.cheesedimension.ModItems;
 
 /** Mala mysz, ktora zyje w serowym wymiarze, lubi ser i rozmnaza sie nim. */
 public class MouseEntity extends AnimalEntity {
-	/** Ticks between eating moldy cheese and turning into a moldy mouse (100 = 5 s), so the player can get away. */
+	/**
+	 * Ticks between eating moldy cheese or cheddar and turning into a moldy or fire mouse
+	 * (100 = 5 s), so the player can get away.
+	 */
 	private static final int INFECTION_DELAY = 100;
 
 	/** -1 when healthy, otherwise ticks left until the transformation. */
 	private int infectionTicks = -1;
+	/** What the mouse turns into: true = fire mouse (ate cheddar), false = moldy mouse (ate moldy cheese). */
+	private boolean turnsIntoFireMouse;
 
 	public MouseEntity(EntityType<? extends MouseEntity> entityType, World world) {
 		super(entityType, world);
@@ -70,16 +75,20 @@ public class MouseEntity extends AnimalEntity {
 		return stack.isOf(ModItems.CHEESE);
 	}
 
-	/** Feeding moldy cheese infects the mouse; it turns into a moldy mouse after a short delay. */
+	/**
+	 * Feeding moldy cheese or cheddar starts a transformation: after a short delay the mouse turns
+	 * into a moldy mouse (moldy cheese) or a fire mouse (cheddar).
+	 */
 	@Override
 	public ActionResult interactMob(PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getStackInHand(hand);
-		if (stack.isOf(ModItems.MOLDY_CHEESE)) {
+		if (stack.isOf(ModItems.MOLDY_CHEESE) || stack.isOf(ModItems.CHEDDAR)) {
 			if (infectionTicks >= 0) {
 				return ActionResult.PASS;
 			}
 			if (!getWorld().isClient) {
 				infectionTicks = INFECTION_DELAY;
+				turnsIntoFireMouse = stack.isOf(ModItems.CHEDDAR);
 				stack.decrementUnlessCreative(1, player);
 				playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0f, 1.0f);
 			}
@@ -97,14 +106,23 @@ public class MouseEntity extends AnimalEntity {
 		if (infectionTicks > 0) {
 			infectionTicks--;
 			if (infectionTicks % 5 == 0) {
-				world.spawnParticles(ParticleTypes.COMPOSTER, getX(), getBodyY(0.5), getZ(), 3, 0.2, 0.2, 0.2, 0.02);
+				world.spawnParticles(turnsIntoFireMouse ? ParticleTypes.FLAME : ParticleTypes.COMPOSTER,
+						getX(), getBodyY(0.5), getZ(), 3, 0.2, 0.2, 0.2, 0.02);
 			}
 			return;
 		}
-		MoldyMouseEntity moldy = convertTo(ModEntities.MOLDY_MOUSE, true);
-		if (moldy != null) {
-			moldy.setPersistent();
-			moldy.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, 1.0f, 1.5f);
+		if (turnsIntoFireMouse) {
+			FireMouseEntity fire = convertTo(ModEntities.FIRE_MOUSE, true);
+			if (fire != null) {
+				fire.setPersistent();
+				fire.playSound(SoundEvents.ITEM_FIRECHARGE_USE, 1.0f, 1.2f);
+			}
+		} else {
+			MoldyMouseEntity moldy = convertTo(ModEntities.MOLDY_MOUSE, true);
+			if (moldy != null) {
+				moldy.setPersistent();
+				moldy.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, 1.0f, 1.5f);
+			}
 		}
 	}
 
@@ -112,12 +130,14 @@ public class MouseEntity extends AnimalEntity {
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		nbt.putInt("InfectionTicks", infectionTicks);
+		nbt.putBoolean("TurnsIntoFireMouse", turnsIntoFireMouse);
 	}
 
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		infectionTicks = nbt.contains("InfectionTicks") ? nbt.getInt("InfectionTicks") : -1;
+		turnsIntoFireMouse = nbt.getBoolean("TurnsIntoFireMouse");
 	}
 
 	@Nullable
