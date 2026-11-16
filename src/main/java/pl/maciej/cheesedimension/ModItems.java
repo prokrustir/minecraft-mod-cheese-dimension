@@ -32,6 +32,12 @@ public class ModItems {
 					.statusEffect(new StatusEffectInstance(StatusEffects.POISON, 20 * 10), 1.0f)
 					.build())));
 
+	public static final Item CHEDDAR = register("cheddar",
+			new Item(new Item.Settings().food(new FoodComponent.Builder()
+					.nutrition(5)
+					.saturationModifier(0.7f)
+					.build())));
+
 	public static final Item CHEESE_KNIFE = register("cheese_knife",
 			new CheeseKnifeItem(new Item.Settings().maxDamage(64)));
 
@@ -62,8 +68,10 @@ public class ModItems {
 				.entries((context, entries) -> {
 					entries.add(ModBlocks.CHEESE_BLOCK);
 					entries.add(ModBlocks.MOLDY_CHEESE_BLOCK);
+					entries.add(ModBlocks.CHEDDAR_BLOCK);
 					entries.add(CHEESE);
 					entries.add(MOLDY_CHEESE);
+					entries.add(CHEDDAR);
 					entries.add(CHEESE_KNIFE);
 					entries.add(CHEESE_SAUCE_BUCKET);
 					entries.add(MOUSE_SPAWN_EGG);

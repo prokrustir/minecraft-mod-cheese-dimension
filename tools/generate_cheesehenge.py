@@ -19,12 +19,13 @@ SIZE_Y = 10
 CENTER = 12
 PLATFORM_RADIUS = 12.4   # round cheese platform at y = 0, flush with the ground
 
-PALETTE_KEYS = ["air", "void", "cheese", "moldy"]
+PALETTE_KEYS = ["air", "void", "cheese", "moldy", "cheddar"]
 PALETTE = {
     "air": ("minecraft:air", {}),
     "void": ("minecraft:structure_void", {}),   # keeps the existing terrain outside the platform
     "cheese": ("cheesedimension:cheese_block", {}),
     "moldy": ("cheesedimension:moldy_cheese_block", {}),
+    "cheddar": ("cheesedimension:cheddar_block", {}),
 }
 
 # Cheese Golems placed with the template (x, y, z are inside the inner ring, standing on y = 1).
@@ -40,8 +41,13 @@ def put(x, y, z, key):
 
 
 def stone():
-    """Mostly cheese with some moldy blocks mixed in."""
+    """Platform: mostly cheese with some moldy blocks mixed in."""
     return "moldy" if rnd.random() < 0.15 else "cheese"
+
+
+def pillar_stone():
+    """Pillars, lintels and trilithons: mostly cheddar with some moldy blocks mixed in."""
+    return "moldy" if rnd.random() < 0.15 else "cheddar"
 
 
 def line(x0, z0, x1, z1):
@@ -70,13 +76,13 @@ def build():
         for dx in (0, 1):
             for dz in (0, 1):
                 for y in range(1, height + 1):
-                    put(px + dx, y, pz + dz, stone())
+                    put(px + dx, y, pz + dz, pillar_stone())
     for k in range(12):
         ax, az, ah = pillars[k]
         bx, bz, bh = pillars[(k + 1) % 12]
         if ah == 5 and bh == 5 and rnd.random() > 0.2:
             for x, z in line(ax, az, bx + 1, bz + 1):
-                put(x, 6, z, stone())
+                put(x, 6, z, pillar_stone())
 
     # Inner horseshoe: 5 trilithons (two 1x1 pillars 6 high with a lintel at y = 7), open to the south.
     for deg in (180, 225, 270, 315, 360):
@@ -88,9 +94,9 @@ def build():
         bx, bz = round(cx + 1.5 * tx), round(cz + 1.5 * tz)
         for x, z in ((ax, az), (bx, bz)):
             for y in range(1, 7):
-                put(x, y, z, stone())
+                put(x, y, z, pillar_stone())
         for x, z in line(ax, az, bx, bz):
-            put(x, 7, z, stone())
+            put(x, 7, z, pillar_stone())
 
     # Altar in the middle: 3x3 base with a taller block, topped by a moldy block.
     for dx in (-1, 0, 1):
@@ -128,7 +134,7 @@ def write_nbt(path):
 
 
 def preview():
-    symbols = {"air": ".", "void": " ", "cheese": "#", "moldy": "m"}
+    symbols = {"air": ".", "void": " ", "cheese": "#", "moldy": "m", "cheddar": "C"}
     for y in (0, 1, 6, 7):
         print(f"--- layer y={y} (north at top) ---")
         for z in range(SIZE_XZ):

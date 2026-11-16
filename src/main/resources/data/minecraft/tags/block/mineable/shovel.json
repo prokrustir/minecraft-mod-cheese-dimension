@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "cheesedimension:cheese_block",
-    "cheesedimension:moldy_cheese_block"
+    "cheesedimension:moldy_cheese_block",
+    "cheesedimension:cheddar_block"
   ]
 }

@@ -175,52 +175,6 @@ public class MoldyMouseEntity extends HostileEntity {
 		}
 	}
 
-	/**
-	 * Targets the nearest visible player, including players in creative mode (the vanilla
-	 * ActiveTargetGoal skips them, so a creeper ignores creative players). Spectators are still ignored.
-	 */
-	private static class TargetAnyPlayerGoal extends Goal {
-		private final MoldyMouseEntity mouse;
-		private PlayerEntity target;
-
-		TargetAnyPlayerGoal(MoldyMouseEntity mouse) {
-			this.mouse = mouse;
-			setControls(EnumSet.of(Control.TARGET));
-		}
-
-		private double range() {
-			return mouse.getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE);
-		}
-
-		@Override
-		public boolean canStart() {
-			// ignoreCreative = false: creative players are valid targets.
-			PlayerEntity player = mouse.getWorld().getClosestPlayer(mouse.getX(), mouse.getY(), mouse.getZ(), range(), false);
-			if (player == null || !mouse.getVisibilityCache().canSee(player)) {
-				return false;
-			}
-			target = player;
-			return true;
-		}
-
-		@Override
-		public boolean shouldContinue() {
-			return target != null && target.isAlive() && !target.isSpectator()
-					&& mouse.squaredDistanceTo(target) <= range() * range();
-		}
-
-		@Override
-		public void start() {
-			mouse.setTarget(target);
-		}
-
-		@Override
-		public void stop() {
-			mouse.setTarget(null);
-			target = null;
-		}
-	}
-
 	/** Starts the fuse when the target is close, cancels it when the target runs away (as in CreeperIgniteGoal). */
 	private static class IgniteGoal extends Goal {
 		private final MoldyMouseEntity mouse;

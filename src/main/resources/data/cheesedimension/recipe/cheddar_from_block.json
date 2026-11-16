@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "cheesedimension:cheddar_block"
+    }
+  ],
+  "result": {
+    "id": "cheesedimension:cheddar",
+    "count": 4
+  }
+}
