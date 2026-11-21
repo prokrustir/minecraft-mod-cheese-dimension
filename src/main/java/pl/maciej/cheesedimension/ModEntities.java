@@ -10,6 +10,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.world.Heightmap;
 import net.minecraft.entity.passive.IronGolemEntity;
 import pl.maciej.cheesedimension.entity.CheeseGolemEntity;
+import pl.maciej.cheesedimension.entity.ChristmasMouseEntity;
 import pl.maciej.cheesedimension.entity.FireMouseEntity;
 import pl.maciej.cheesedimension.entity.MoldyMouseEntity;
 import pl.maciej.cheesedimension.entity.MouseEntity;
@@ -49,6 +50,22 @@ public class ModEntities {
 					.maxTrackingRange(10)
 					.build("rat_king"));
 
+	public static final EntityType<ChristmasMouseEntity> ELF_MOUSE = Registry.register(
+			Registries.ENTITY_TYPE,
+			CheeseDimensionMod.id("elf_mouse"),
+			EntityType.Builder.create(ChristmasMouseEntity::new, SpawnGroup.MISC)
+					.dimensions(0.5f, 1.5f)
+					.maxTrackingRange(10)
+					.build("elf_mouse"));
+
+	public static final EntityType<ChristmasMouseEntity> CHRISTMAS_MOUSE = Registry.register(
+			Registries.ENTITY_TYPE,
+			CheeseDimensionMod.id("christmas_mouse"),
+			EntityType.Builder.create(ChristmasMouseEntity::new, SpawnGroup.MISC)
+					.dimensions(0.5f, 1.5f)
+					.maxTrackingRange(10)
+					.build("christmas_mouse"));
+
 	public static final EntityType<CheeseGolemEntity> CHEESE_GOLEM = Registry.register(
 			Registries.ENTITY_TYPE,
 			CheeseDimensionMod.id("cheese_golem"),
@@ -60,6 +77,8 @@ public class ModEntities {
 	public static void register() {
 		FabricDefaultAttributeRegistry.register(CHEESE_GOLEM, IronGolemEntity.createIronGolemAttributes());
 		FabricDefaultAttributeRegistry.register(RAT_KING, RatKingEntity.createRatKingAttributes());
+		FabricDefaultAttributeRegistry.register(ELF_MOUSE, ChristmasMouseEntity.createChristmasMouseAttributes());
+		FabricDefaultAttributeRegistry.register(CHRISTMAS_MOUSE, ChristmasMouseEntity.createChristmasMouseAttributes());
 		FabricDefaultAttributeRegistry.register(MOUSE, MouseEntity.createMouseAttributes());
 		FabricDefaultAttributeRegistry.register(MOLDY_MOUSE, MoldyMouseEntity.createMoldyMouseAttributes());
 		FabricDefaultAttributeRegistry.register(FIRE_MOUSE, FireMouseEntity.createFireMouseAttributes());

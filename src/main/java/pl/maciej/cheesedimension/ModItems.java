@@ -54,6 +54,12 @@ public class ModItems {
 	public static final Item RAT_KING_SPAWN_EGG = register("rat_king_spawn_egg",
 			new SpawnEggItem(ModEntities.RAT_KING, 0x4A3F36, 0xE6B422, new Item.Settings()));
 
+	public static final Item ELF_MOUSE_SPAWN_EGG = register("elf_mouse_spawn_egg",
+			new SpawnEggItem(ModEntities.ELF_MOUSE, 0x4F6B2E, 0xC8A47E, new Item.Settings()));
+
+	public static final Item CHRISTMAS_MOUSE_SPAWN_EGG = register("christmas_mouse_spawn_egg",
+			new SpawnEggItem(ModEntities.CHRISTMAS_MOUSE, 0xE8DCC8, 0x7A1C2C, new Item.Settings()));
+
 	public static final RegistryKey<ItemGroup> GROUP_KEY =
 			RegistryKey.of(RegistryKeys.ITEM_GROUP, CheeseDimensionMod.id("main"));
 
@@ -77,6 +83,8 @@ public class ModItems {
 					entries.add(MOUSE_SPAWN_EGG);
 					entries.add(CHEESE_GOLEM_SPAWN_EGG);
 					entries.add(RAT_KING_SPAWN_EGG);
+					entries.add(ELF_MOUSE_SPAWN_EGG);
+					entries.add(CHRISTMAS_MOUSE_SPAWN_EGG);
 				})
 				.build();
 		Registry.register(Registries.ITEM_GROUP, GROUP_KEY, group);
