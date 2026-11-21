@@ -1,25 +1,33 @@
 #!/usr/bin/env python3
-"""Generates the Christmas House structure template (15 x 13 x 13) as a Minecraft structure .nbt file.
+"""Generates the Christmas House structure template (15 x 13 x 15) as a Minecraft structure .nbt file.
 
 Usage: python3 tools/generate_christmas_house.py src/main/resources/data/cheesedimension/structure/christmas_house.nbt [--preview]
 
 A wooden house (spruce planks, spruce log corners, cobblestone foundation) with a gable roof of
 spruce stairs and a snowy ridge. Inside: a brick fireplace with a campfire and a chimney, a
 decorated Christmas tree with presents, a table with a cake, a rug, a loot chest and the two
-Christmas mice who live there. The door is in the south wall.
+Christmas mice who live there. The door is in the south wall and opens onto a small wooden porch.
 
-Axes: x = east, z = south, y = up. The house walls are x 1-13, z 1-11; x 0/14 and z 0/12 hold only
-the roof overhang. The structure is rotated randomly when it is generated in the world.
+Axes: x = east, z = south, y = up. The house walls are x 1-13, z 1-11; x 0/14 and z 0/12 hold the
+roof overhang, z 12-13 the porch. The structure is rotated randomly when it is generated in the world.
+
+Positions that the template does not set keep the existing terrain (they are simply left out of the
+file, like vanilla does; a structure_void block in the file would be placed as a real, invisible block).
+The script checks that the door and the space in front of and behind it are free.
 """
 import sys
 
 import nbt
 
-SX, SY, SZ = 15, 13, 13
+SX, SY, SZ = 15, 13, 15
 WALL_X0, WALL_X1 = 1, 13
 WALL_Z0, WALL_Z1 = 1, 11
 ROOF_Y = 5          # lowest roof row (also the top plate of the walls)
+ROOF_Z1 = 12        # the roof covers z 0-12 (one block of overhang on each side)
 RIDGE_Z = 6
+DOOR_X = 7
+PORCH_X0, PORCH_X1 = 5, 9
+PORCH_Z0, PORCH_Z1 = 12, 13
 
 CHEST_LOOT = "cheesedimension:chests/christmas_house"
 # Entities placed with the template: (entity id, x, y, z), standing on the floor (y 1.0).
@@ -45,7 +53,7 @@ def put(x, y, z, name, **props):
 
 def roof_height(z):
     """Height of the roof row above column z (the stairs block itself)."""
-    return ROOF_Y + min(z, SZ - 1 - z)
+    return ROOF_Y + min(z, ROOF_Z1 - z)
 
 
 def leaves():
@@ -53,12 +61,6 @@ def leaves():
 
 
 def build():
-    # Everything starts as structure void, so the terrain around the house stays as it is.
-    for x in range(SX):
-        for y in range(SY):
-            for z in range(SZ):
-                put(x, y, z, "structure_void")
-
     # Foundation, floor, walls and the air inside.
     for x in range(WALL_X0, WALL_X1 + 1):
         for z in range(WALL_Z0, WALL_Z1 + 1):
@@ -81,7 +83,7 @@ def build():
 
     # Roof: spruce stairs on both slopes, a ridge of snow, overhanging by one block on every side.
     for x in range(SX):
-        for z in range(SZ):
+        for z in range(ROOF_Z1 + 1):
             y = roof_height(z)
             if z < RIDGE_Z:
                 put(x, y, z, "spruce_stairs", facing="south", half="bottom", shape="straight", waterlogged=False)
@@ -90,10 +92,22 @@ def build():
             else:
                 put(x, y, z, "snow_block")
 
+    porch()
     windows_and_door()
     fireplace()
     christmas_tree()
     furniture()
+    check_door_access()
+
+
+def porch():
+    """Wooden porch in front of the door, with air above it, so the terrain never blocks the door."""
+    for x in range(PORCH_X0, PORCH_X1 + 1):
+        for z in range(PORCH_Z0, PORCH_Z1 + 1):
+            put(x, 0, z, "spruce_planks")
+            for y in range(1, ROOF_Y):
+                if (x, y, z) not in grid:
+                    put(x, y, z, "air")
 
 
 def windows_and_door():
@@ -110,8 +124,8 @@ def windows_and_door():
         put(x, 7, RIDGE_Z, "glass_pane", **pane_z)
     # Door in the middle of the south wall, with a torch on each side outside.
     door = dict(facing="north", hinge="left", open=False, powered=False)
-    put(7, 1, WALL_Z1, "spruce_door", half="lower", **door)
-    put(7, 2, WALL_Z1, "spruce_door", half="upper", **door)
+    put(DOOR_X, 1, WALL_Z1, "spruce_door", half="lower", **door)
+    put(DOOR_X, 2, WALL_Z1, "spruce_door", half="upper", **door)
     for x in (6, 8):
         put(x, 3, WALL_Z1 + 1, "wall_torch", facing="south")
 
@@ -172,20 +186,32 @@ def furniture():
     put(2, 1, 2, "lantern", hanging=False, waterlogged=False)
 
 
+def block_at(x, y, z):
+    s = grid.get((x, y, z))
+    return None if s is None else palette[s][0].split(":")[1]
+
+
+def check_door_access():
+    """Fails if anything blocks the door: the two cells inside and the two porch cells in front must be
+    air (at both door heights) with a solid floor below, and the door itself must be complete."""
+    assert block_at(DOOR_X, 1, WALL_Z1) == "spruce_door" and block_at(DOOR_X, 2, WALL_Z1) == "spruce_door"
+    for z in (WALL_Z1 - 2, WALL_Z1 - 1, WALL_Z1 + 1, WALL_Z1 + 2):
+        for y, passable in ((1, ("air", "red_carpet")), (2, ("air",))):   # a carpet can be walked over
+            assert block_at(DOOR_X, y, z) in passable, f"door blocked at {(DOOR_X, y, z)}: {block_at(DOOR_X, y, z)}"
+        assert block_at(DOOR_X, 0, z) in ("spruce_planks", "cobblestone"), f"no floor at {(DOOR_X, 0, z)}"
+
+
 def write_nbt(path):
     blocks = []
     chest = state("minecraft:chest", facing="west", type="single", waterlogged=False)
-    for x in range(SX):
-        for y in range(SY):
-            for z in range(SZ):
-                s = grid[(x, y, z)]
-                block = {"pos": ("list", ("int", [x, y, z])), "state": ("int", s)}
-                if s == chest:
-                    block["nbt"] = ("compound", {
-                        "id": ("string", "minecraft:chest"),
-                        "LootTable": ("string", CHEST_LOOT),
-                    })
-                blocks.append(block)
+    for (x, y, z), s in sorted(grid.items()):
+        block = {"pos": ("list", ("int", [x, y, z])), "state": ("int", s)}
+        if s == chest:
+            block["nbt"] = ("compound", {
+                "id": ("string", "minecraft:chest"),
+                "LootTable": ("string", CHEST_LOOT),
+            })
+        blocks.append(block)
     mice = [{
         "pos": ("list", ("double", [mx, my, mz])),
         "blockPos": ("list", ("int", [int(mx), int(my), int(mz)])),
@@ -201,7 +227,7 @@ def write_nbt(path):
     nbt.write_gzipped(path, root)
 
 
-SYMBOLS = {"structure_void": " ", "air": ".", "spruce_planks": "#", "cobblestone": "c", "spruce_log": "L",
+SYMBOLS = {"air": ".", "spruce_planks": "#", "cobblestone": "c", "spruce_log": "L",
            "stripped_spruce_log": "T", "spruce_stairs": "s", "snow_block": "S", "glass_pane": "g",
            "spruce_door": "D", "wall_torch": "t", "bricks": "B", "campfire": "F", "spruce_leaves": "*",
            "red_wool": "r", "gold_block": "o", "shroomlight": "l", "glowstone": "G", "lime_wool": "p",
@@ -209,14 +235,20 @@ SYMBOLS = {"structure_void": " ", "air": ".", "spruce_planks": "#", "cobblestone
            "chest": "C"}
 
 
+def symbol(x, y, z):
+    """Preview character; a space means the position is not in the template (terrain stays)."""
+    b = block_at(x, y, z)
+    return " " if b is None else SYMBOLS[b]
+
+
 def preview():
     for y in (0, 1, 2, 5, 8):
         print(f"--- layer y={y} (north at top) ---")
         for z in range(SZ):
-            print("".join(SYMBOLS[palette[grid[(x, y, z)]][0].split(":")[1]] for x in range(SX)))
-    print("--- cross-section x=7 (north at left, up at top) ---")
+            print("".join(symbol(x, y, z) for x in range(SX)))
+    print(f"--- cross-section x={DOOR_X} through the door (north at left, up at top) ---")
     for y in reversed(range(SY)):
-        print("".join(SYMBOLS[palette[grid[(7, y, z)]][0].split(":")[1]] for z in range(SZ)))
+        print("".join(symbol(DOOR_X, y, z) for z in range(SZ)))
 
 
 if __name__ == "__main__":
@@ -224,5 +256,5 @@ if __name__ == "__main__":
     if "--preview" in sys.argv:
         preview()
     write_nbt(sys.argv[1])
-    solid = sum(1 for s in grid.values() if palette[s][0] not in ("minecraft:air", "minecraft:structure_void"))
+    solid = sum(1 for s in grid.values() if palette[s][0] != "minecraft:air")
     print("wrote", sys.argv[1], "with", solid, "blocks and", len(palette), "block states")

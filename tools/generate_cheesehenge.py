@@ -19,10 +19,9 @@ SIZE_Y = 10
 CENTER = 12
 PLATFORM_RADIUS = 12.4   # round cheese platform at y = 0, flush with the ground
 
-PALETTE_KEYS = ["air", "void", "cheese", "moldy", "cheddar"]
+PALETTE_KEYS = ["air", "cheese", "moldy", "cheddar"]
 PALETTE = {
     "air": ("minecraft:air", {}),
-    "void": ("minecraft:structure_void", {}),   # keeps the existing terrain outside the platform
     "cheese": ("cheesedimension:cheese_block", {}),
     "moldy": ("cheesedimension:moldy_cheese_block", {}),
     "cheddar": ("cheesedimension:cheddar_block", {}),
@@ -57,7 +56,9 @@ def line(x0, z0, x1, z1):
 
 
 def build():
-    # Platform: round disc at y = 0, everything else in the footprint is air, outside is "void".
+    # Platform: round disc at y = 0, everything else in the footprint is air. Outside the disc is
+    # "void": those positions are left out of the template, so the existing terrain stays there
+    # (a structure_void block in the file would be placed in the world as a real, invisible block).
     for x in range(SIZE_XZ):
         for z in range(SIZE_XZ):
             inside = math.hypot(x - CENTER, z - CENTER) <= PLATFORM_RADIUS
@@ -113,6 +114,8 @@ def write_nbt(path):
         for y in range(SIZE_Y):
             for z in range(SIZE_XZ):
                 key = grid.get((x, y, z), "air")
+                if key == "void":
+                    continue
                 blocks.append({"pos": ("list", ("int", [x, y, z])),
                                "state": ("int", PALETTE_KEYS.index(key))})
     golems = [{
